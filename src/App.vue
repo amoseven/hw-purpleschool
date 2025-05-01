@@ -1,8 +1,11 @@
+<template>
+  <h1>{{ currentFullDate }}</h1>
+</template>
+
 <script setup>
 import {computed} from "vue";
 
 function formatDate(date) {
-
   let dd = date.getDate().toString().padStart(2, '0');
   let mm = (date.getMonth() + 1).toString().padStart(2, '0')
   let yy = date.getFullYear()
@@ -18,10 +21,5 @@ const currentFullDate = computed(() => formatDate(new Date()))
 
 </script>
 
-<template>
-  <h1>{{ currentFullDate }}</h1>
-</template>
-
 <style scoped>
-
 </style>
