@@ -6,17 +6,22 @@ import Ok from "./icons/Ок.vue"
 import Cancel from "./icons/Cancel.vue"
 
 const emit = defineEmits(['show-translate', 'change-status'])
-const { isFlipped } = defineProps({
+const { isFlipped, wordRus, wordEng } = defineProps({
   isFlipped: {
     type: Boolean,
     default: false
   },
-  word: {
+  wordEng: {
+    type: String,
+    default: "Перевод"
+  },
+  wordRus: {
     type: String,
     default: "Перевод"
   },
 })
 const text_action = computed(() => isFlipped ? 'Скрыть' : 'Перевернуть');
+const word = computed(() => isFlipped ? wordRus : wordEng);
 
 function showTranslate() {
   emit('show-translate', !isFlipped)
