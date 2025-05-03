@@ -1,24 +1,25 @@
 <script setup>
 
-import {ref} from "vue";
+import {computed } from "vue";
 
 import Ok from "./icons/Ок.vue"
 import Cancel from "./icons/Cancel.vue"
 
-const text_action = ref('Перевернуть')
-const {text_rus, text_eng } = defineProps({
-  'text_rus': {
-    type: String
-  },
-  'text_eng': {
-    type: String,
-    default: 'translate'
-  }
-})
 const emit = defineEmits(['show-translate', 'change-status'])
+const { isFlipped } = defineProps({
+  isFlipped: {
+    type: Boolean,
+    default: false
+  },
+  word: {
+    type: String,
+    default: "Перевод"
+  },
+})
+const text_action = computed(() => isFlipped ? 'Скрыть' : 'Перевернуть');
 
-function showTranslate(value) {
-  emit('show-translate', value)
+function showTranslate() {
+  emit('show-translate', !isFlipped)
 }
 
 function changeStatus(value) {
@@ -29,9 +30,9 @@ function changeStatus(value) {
 <template>
   <div class="card-wrap">
     <div class="card-inner">
-      <p class="card-caption">{{ text_eng }}</p>
-      <p class="card-action" @click="showTranslate('rus')">{{ text_action }}</p>
-      <div class="card-status">
+      <p class="card-caption">{{ word }}</p>
+      <p class="card-action" @click="showTranslate()">{{ text_action }}</p>
+      <div class="card-status" v-if="false">
         <Cancel :size="24" @click="changeStatus(0)"/>
         <Ok :size="24" @click="changeStatus(1)"/>
       </div>
@@ -81,7 +82,7 @@ function changeStatus(value) {
     font-weight: 700;
     font-size: 12px;
     line-height: 18px;
-    display: none;
+   /* display: none;*/
   }
 
   .card-status {
