@@ -1,6 +1,7 @@
 <script setup>
 
 import {ref} from "vue";
+
 import Ok from "./icons/Ок.vue"
 import Cancel from "./icons/Cancel.vue"
 
@@ -16,8 +17,8 @@ const {text_rus, text_eng } = defineProps({
 })
 const emit = defineEmits(['show-translate', 'change-status'])
 
-function showTranslate() {
-  emit('show-translate')
+function showTranslate(value) {
+  emit('show-translate', value)
 }
 
 function changeStatus(value) {
@@ -29,7 +30,7 @@ function changeStatus(value) {
   <div class="card-wrap">
     <div class="card-inner">
       <p class="card-caption">{{ text_eng }}</p>
-      <p class="card-action" @click="showTranslate">{{ text_action }}</p>
+      <p class="card-action" @click="showTranslate('rus')">{{ text_action }}</p>
       <div class="card-status">
         <Cancel :size="24" @click="changeStatus(0)"/>
         <Ok :size="24" @click="changeStatus(1)"/>

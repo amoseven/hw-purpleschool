@@ -2,14 +2,15 @@
 import Score from "./Score.vue";
 import {ref} from "vue";
 
-const scores = ref(100)
+// для проверки работы инициализация значением 0
+const scores = ref(0)
 </script>
 
 <template>
-<div class="app-header">
-<p class="app-name">Запомни слово</p>
-  <Score :scores="scores" />
-</div>
+  <div class="app-header">
+    <p class="app-name">Запомни слово</p>
+    <Score :scores="scores" />
+  </div>
 </template>
 
 <style scoped>

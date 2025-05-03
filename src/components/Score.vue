@@ -12,7 +12,7 @@ const { scores } = defineProps({
 <template>
 <div class="score">
   <p class="value">{{scores}}</p>
-  <Heart style="padding: 8px;" />
+  <Heart />
 </div>
 </template>
 
