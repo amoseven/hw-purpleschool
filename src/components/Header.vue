@@ -1,15 +1,18 @@
 <script setup>
 import Score from "./Score.vue";
-import {ref} from "vue";
 
-// для проверки работы инициализация значением 0
-const scores = ref(0)
+const {scores} = defineProps({
+  scores: {
+    type: Number,
+    default: 100
+  }
+})
 </script>
 
 <template>
   <div class="app-header">
     <p class="app-name">Запомни слово</p>
-    <Score :scores="scores" />
+    <Score :scores="scores"/>
   </div>
 </template>
 
@@ -22,6 +25,7 @@ const scores = ref(0)
   height: 121px;
 
 }
+
 .app-name {
   color: var(--color-card-inverted);
   text-transform: uppercase;

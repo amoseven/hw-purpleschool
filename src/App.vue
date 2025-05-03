@@ -5,6 +5,7 @@ import Cards from "./components/Cards.vue";
 import {ref} from "vue";
 
 const isFlipped = ref(false);
+const scores = ref(55)
 
 function showTranslate(newValue) {
   isFlipped.value = newValue
@@ -16,7 +17,7 @@ function changeStatus(value) {
 
 <template>
   <main>
-    <Header />
+    <Header :scores="scores" />
     <Cards
         :is-flipped="isFlipped"
         word="The Cat"
