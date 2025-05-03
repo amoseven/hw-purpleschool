@@ -1,7 +1,12 @@
 <script setup>
 import Heart from "./icons/Heart.vue";
 
-const { scores=100 } = defineProps(['scores'])
+const { scores } = defineProps({
+  'scores': {
+    type: Number,
+    default: 100
+  }
+})
 </script>
 
 <template>

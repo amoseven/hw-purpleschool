@@ -5,7 +5,15 @@ import Ok from "./icons/Ок.vue"
 import Cancel from "./icons/Cancel.vue"
 
 const text_action = ref('Перевернуть')
-const {text_rus, text_eng = 'translate'} = defineProps(['text_rus', 'text_eng'])
+const {text_rus, text_eng } = defineProps({
+  'text_rus': {
+    type: String
+  },
+  'text_eng': {
+    type: String,
+    default: 'translate'
+  }
+})
 const emit = defineEmits(['show-translate', 'change-status'])
 
 function showTranslate() {
