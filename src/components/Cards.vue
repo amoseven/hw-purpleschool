@@ -32,7 +32,7 @@ function changeStatus(value) {
     <div class="card-inner">
       <p class="card-caption">{{ word }}</p>
       <p class="card-action" @click="showTranslate()">{{ text_action }}</p>
-      <div class="card-status" v-if="!isFlipped">
+      <div class="card-status" v-if="isFlipped">
         <Cancel :size="24" @click="changeStatus(0)"/>
         <Ok :size="24" @click="changeStatus(1)"/>
       </div>
