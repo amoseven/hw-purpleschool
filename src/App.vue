@@ -1,5 +1,4 @@
 <script setup>
-// import Button from "./components/Button.vue";
 import Header from "./components/Header.vue";
 import Cards from "./components/Cards.vue";
 import {ref} from "vue";
@@ -23,6 +22,5 @@ function changeStatus(value) {
         word="The Cat"
         @show-translate="showTranslate"
         @change-status="changeStatus" />
-<!--    <Button>Начать игру</Button>-->
   </main>
 </template>
