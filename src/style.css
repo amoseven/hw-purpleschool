@@ -4,7 +4,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --color-primary: #008BFE;
+  --color-secondary: #CCE8FF;
   --color-card: #FFFFFF;
+  --color-card-inverted: #222222;
   --font-family: "Roboto", sans-serif;
 }
 
