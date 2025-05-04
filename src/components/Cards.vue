@@ -1,19 +1,23 @@
 <script setup>
 
-import {computed } from "vue";
+import {computed} from "vue";
 
 import Ok from "./icons/Ок.vue"
 import Cancel from "./icons/Cancel.vue"
 
 const emit = defineEmits(['show-translate', 'change-status'])
-const { state, translation, word, status } = defineProps({
+const {id, state, translation, word, status} = defineProps({
+  id: {
+    type: Number,
+    required: true
+  },
   status: {
     type: String,
     default: 'pending'
   },
   state: {
-    type: Boolean,
-    default: false
+    type: String,
+    default: 'closed'
   },
   word: {
     type: String,
@@ -25,17 +29,18 @@ const { state, translation, word, status } = defineProps({
   },
 })
 
-const word_on_card = computed(() => state ? translation : word);
+const isOpen = computed(() => state === 'opened')
+const word_on_card = computed(() => isOpen ? translation : word);
 const text_action = computed(() => status !== 'pending' ? 'Завершено' : 'Перевернуть');
-const isPending = computed(() => status === 'pending' && state);
+const isPending = computed(() => status === 'pending' && isOpen);
 
 
 function showTranslate() {
-  emit('show-translate', !state)
+  emit('show-translate', {id, value: isOpen ? 'closed' : 'opened'})
 }
 
-function changeStatus(value) {
-  emit('change-status', value)
+function changeStatus(id, value) {
+  emit('change-status', {id, value})
 }
 </script>
 
@@ -51,8 +56,8 @@ function changeStatus(value) {
         <Ok :size="24" @click="changeStatus(1)"/>
       </div>
 
-        <Cancel v-if="status==='fail'" :size="32" class="card-result" />
-        <Ok v-if="status==='success'" :size="32" class="card-result" />
+      <Cancel v-if="status==='fail'" :size="32" class="card-result"/>
+      <Ok v-if="status==='success'" :size="32" class="card-result"/>
 
     </div>
   </div>

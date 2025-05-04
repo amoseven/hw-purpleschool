@@ -11,18 +11,21 @@ const score = ref(0)
 
 const cards = ref([
   {
-    state: false,
+    id: 1,
+    state: 'closed',
     status: 'pending',
     word: 'Alex',
     translation: 'Алексей'
   }
 ]);
 
-function showTranslate(newValue) {
-  state.value = newValue
+function showTranslate({id, value}) {
+  const card = cards.value.find(card => card.id === id);
+  card.state = value
 }
 
-function changeStatus(value) {
+function changeStatus({id, value}) {
+  //const card = cards.value.find(card => card.id === id);
   console.log("changeStatus emit with value = ", value)
 }
 </script>
