@@ -3,15 +3,25 @@ import Header from "./components/Header.vue";
 import Cards from "./components/Cards.vue";
 import {ref} from "vue";
 
-const state = ref(false);
-const status = ref('pending');
-const scores = ref(55)
-const translation = ref('Алексей')
-const word = ref('Alex')
+const score = ref(0)
+// const state = ref(false);
+// const status = ref('pending');
+// const translation = ref('Алексей')
+// const word = ref('Alex')
+
+const cards = ref([
+  {
+    state: false,
+    status: 'pending',
+    word: 'Alex',
+    translation: 'Алексей'
+  }
+]);
 
 function showTranslate(newValue) {
   state.value = newValue
 }
+
 function changeStatus(value) {
   console.log("changeStatus emit with value = ", value)
 }
@@ -19,13 +29,10 @@ function changeStatus(value) {
 
 <template>
   <main>
-    <Header :scores="scores" />
+    <Header :scores="score"/>
     <Cards
-        :status="status"
-        :state="state"
-        :translation="translation"
-        :word="word"
+        v-bind='cards[0]'
         @show-translate="showTranslate"
-        @change-status="changeStatus" />
+        @change-status="changeStatus"/>
   </main>
 </template>

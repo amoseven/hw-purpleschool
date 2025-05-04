@@ -26,10 +26,8 @@ const { state, translation, word, status } = defineProps({
 })
 
 const word_on_card = computed(() => state ? translation : word);
-
 const text_action = computed(() => status !== 'pending' ? 'Завершено' : 'Перевернуть');
 const isPending = computed(() => status === 'pending' && state);
-
 
 
 function showTranslate() {
