@@ -3,13 +3,14 @@ import Header from "./components/Header.vue";
 import Cards from "./components/Cards.vue";
 import {ref} from "vue";
 
-const isFlipped = ref(false);
+const state = ref(false);
+const status = ref('pending');
 const scores = ref(55)
-const wordRus = ref('Алексей')
-const wordEng = ref('Alex')
+const translation = ref('Алексей')
+const word = ref('Alex')
 
 function showTranslate(newValue) {
-  isFlipped.value = newValue
+  state.value = newValue
 }
 function changeStatus(value) {
   console.log("changeStatus emit with value = ", value)
@@ -20,9 +21,10 @@ function changeStatus(value) {
   <main>
     <Header :scores="scores" />
     <Cards
-        :is-flipped="isFlipped"
-        :word-rus="wordRus"
-        :word-eng="wordEng"
+        :status="status"
+        :state="state"
+        :translation="translation"
+        :word="word"
         @show-translate="showTranslate"
         @change-status="changeStatus" />
   </main>

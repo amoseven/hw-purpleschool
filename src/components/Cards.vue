@@ -6,25 +6,34 @@ import Ok from "./icons/Ок.vue"
 import Cancel from "./icons/Cancel.vue"
 
 const emit = defineEmits(['show-translate', 'change-status'])
-const { isFlipped, wordRus, wordEng } = defineProps({
-  isFlipped: {
+const { state, translation, word, status } = defineProps({
+  status: {
+    type: String,
+    default: 'pending'
+  },
+  state: {
     type: Boolean,
     default: false
   },
-  wordEng: {
+  word: {
     type: String,
     default: "Перевод"
   },
-  wordRus: {
+  translation: {
     type: String,
     default: "Перевод"
   },
 })
-const text_action = computed(() => isFlipped ? 'Скрыть' : 'Перевернуть');
-const word = computed(() => isFlipped ? wordRus : wordEng);
+
+const word_on_card = computed(() => state ? translation : word);
+
+const text_action = computed(() => status !== 'pending' ? 'Завершено' : 'Перевернуть');
+const isPending = computed(() => status === 'pending' && state);
+
+
 
 function showTranslate() {
-  emit('show-translate', !isFlipped)
+  emit('show-translate', !state)
 }
 
 function changeStatus(value) {
@@ -35,12 +44,18 @@ function changeStatus(value) {
 <template>
   <div class="card-wrap">
     <div class="card-inner">
-      <p class="card-caption">{{ word }}</p>
-      <p class="card-action" @click="showTranslate()">{{ text_action }}</p>
-      <div class="card-status" v-if="isFlipped">
+      <p class="card-caption">{{ word_on_card }}</p>
+
+      <p v-if="!isPending" class="card-action" @click="showTranslate()">{{ text_action }}</p>
+
+      <div class="card-status" v-else>
         <Cancel :size="24" @click="changeStatus(0)"/>
         <Ok :size="24" @click="changeStatus(1)"/>
       </div>
+
+        <Cancel v-if="status==='fail'" :size="32" class="card-result" />
+        <Ok v-if="status==='success'" :size="32" class="card-result" />
+
     </div>
   </div>
 </template>
@@ -87,7 +102,6 @@ function changeStatus(value) {
     font-weight: 700;
     font-size: 12px;
     line-height: 18px;
-   /* display: none;*/
   }
 
   .card-status {
@@ -98,6 +112,11 @@ function changeStatus(value) {
     display: flex;
     justify-content: space-between;
     gap: 48px;
+  }
+
+  .card-result {
+    position: absolute;
+    top: -14px;
   }
 
 
