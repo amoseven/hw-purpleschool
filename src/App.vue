@@ -1,13 +1,9 @@
 <script setup>
 import Header from "./components/Header.vue";
-import Cards from "./components/Cards.vue";
+import Card from "./components/Card.vue";
 import {ref} from "vue";
 
 const score = ref(0)
-// const state = ref(false);
-// const status = ref('pending');
-// const translation = ref('Алексей')
-// const word = ref('Alex')
 
 const cards = ref([
   {
@@ -16,26 +12,43 @@ const cards = ref([
     status: 'pending',
     word: 'Alex',
     translation: 'Алексей'
+  },
+  {
+    id: 2,
+    state: 'closed',
+    status: 'pending',
+    word: 'Hockey',
+    translation: 'Хоккей'
   }
 ]);
 
-function showTranslate({id, value}) {
+function openCard(id) {
   const card = cards.value.find(card => card.id === id);
-  card.state = value
+  if(card) {
+    card.state = 'opened'
+  }
 }
 
-function changeStatus({id, value}) {
-  //const card = cards.value.find(card => card.id === id);
-  console.log("changeStatus emit with value = ", value)
+function changeStatus({id, status}) {
+  const card = cards.value.find(card => card.id === id);
+  if(card) {
+    card.status = status;
+    const multiple = (status === 'success') ? 1 : -1;
+    score.value += multiple*100;
+  }
 }
 </script>
 
 <template>
   <main>
     <Header :scores="score"/>
-    <Cards
-        v-bind='cards[0]'
-        @show-translate="showTranslate"
-        @change-status="changeStatus"/>
+
+      <Card
+          v-bind='cards[0]'
+          @open-card="openCard"
+          @change-status="changeStatus"
+      />
+
   </main>
+
 </template>

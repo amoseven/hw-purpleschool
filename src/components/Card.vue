@@ -21,44 +21,49 @@ const {id, state, translation, word, status} = defineProps({
   },
   word: {
     type: String,
-    default: "Перевод"
+    default: "English"
   },
   translation: {
     type: String,
-    default: "Перевод"
+    default: "Английский"
   },
 })
 
 const isOpen = computed(() => state === 'opened')
-const word_on_card = computed(() => isOpen ? translation : word);
-const text_action = computed(() => status !== 'pending' ? 'Завершено' : 'Перевернуть');
-const isPending = computed(() => status === 'pending' && isOpen);
+const isPending = computed(() => status === 'pending' && isOpen.value);
 
+const word_on_card = computed(() => isOpen.value ? translation : word);
+const text_action = computed(() => isOpen.value ? 'Завершено' : 'Перевернуть');
 
-function showTranslate() {
-  emit('show-translate', {id, value: isOpen ? 'closed' : 'opened'})
+function openCard() {
+  emit('open-card', id)
 }
 
-function changeStatus(id, value) {
-  emit('change-status', {id, value})
+function changeStatus(value) {
+  emit('change-status', {id, status: value})
 }
 </script>
 
 <template>
-  <div class="card-wrap">
-    <div class="card-inner">
-      <p class="card-caption">{{ word_on_card }}</p>
+  <div>
+    <div class="card-wrap">
+      <div class="card-inner">
 
-      <p v-if="!isPending" class="card-action" @click="showTranslate()">{{ text_action }}</p>
+        <p class="card-caption">{{ word_on_card }}</p>
 
-      <div class="card-status" v-else>
-        <Cancel :size="24" @click="changeStatus(0)"/>
-        <Ok :size="24" @click="changeStatus(1)"/>
+        <p v-if="!isPending" class="card-action" @click="openCard()">{{ text_action }}</p>
+
+        <div v-if="isPending" class="card-status">
+          <Cancel :size="24" @click="changeStatus('fail')"/>
+          <Ok :size="24" @click="changeStatus('success')"/>
+        </div>
+
+        <div v-if="!isPending">
+          <Cancel v-if="status==='fail'" :size="32" class="card-result"/>
+          <Ok v-if="status==='success'" :size="32" class="card-result"/>
+        </div>
+
       </div>
-
-      <Cancel v-if="status==='fail'" :size="32" class="card-result"/>
-      <Ok v-if="status==='success'" :size="32" class="card-result"/>
-
     </div>
   </div>
 </template>
