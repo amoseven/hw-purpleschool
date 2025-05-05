@@ -1,29 +1,54 @@
 <script setup>
 import Header from "./components/Header.vue";
-import Cards from "./components/Cards.vue";
+import Card from "./components/Card.vue";
 import {ref} from "vue";
 
-const isFlipped = ref(false);
-const scores = ref(55)
-const wordRus = ref('Алексей')
-const wordEng = ref('Alex')
+const score = ref(0)
 
-function showTranslate(newValue) {
-  isFlipped.value = newValue
+const cards = ref([
+  {
+    id: 1,
+    state: 'closed',
+    status: 'pending',
+    word: 'Alex',
+    translation: 'Алексей'
+  },
+  {
+    id: 2,
+    state: 'closed',
+    status: 'pending',
+    word: 'Hockey',
+    translation: 'Хоккей'
+  }
+]);
+
+function openCard(id) {
+  const card = cards.value.find(card => card.id === id);
+  if(card) {
+    card.state = 'opened'
+  }
 }
-function changeStatus(value) {
-  console.log("changeStatus emit with value = ", value)
+
+function changeStatus({id, status}) {
+  const card = cards.value.find(card => card.id === id);
+  if(card) {
+    card.status = status;
+    const multiple = (status === 'success') ? 1 : -1;
+    score.value += multiple*100;
+  }
 }
 </script>
 
 <template>
   <main>
-    <Header :scores="scores" />
-    <Cards
-        :is-flipped="isFlipped"
-        :word-rus="wordRus"
-        :word-eng="wordEng"
-        @show-translate="showTranslate"
-        @change-status="changeStatus" />
+    <Header :scores="score"/>
+
+      <Card
+          v-bind='cards[0]'
+          @open-card="openCard"
+          @change-status="changeStatus"
+      />
+
   </main>
+
 </template>
