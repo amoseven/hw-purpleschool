@@ -26,6 +26,13 @@ const cards = ref([
     status: 'pending',
     word: 'The Dog',
     translation: 'Собака'
+  },
+  {
+    id: 4,
+    state: 'closed',
+    status: 'pending',
+    word: 'House',
+    translation: 'Дом'
   }
 ]);
 
