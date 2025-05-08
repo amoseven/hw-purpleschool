@@ -29,6 +29,7 @@ async function load() {
   } catch (e) {
     console.log(e)
   }
+  }
 }
 
 onMounted(() => {
