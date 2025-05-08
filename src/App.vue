@@ -68,7 +68,6 @@ function changeStatus({id, status}) {
       />
     </div>
 
-
   </main>
 
 </template>
