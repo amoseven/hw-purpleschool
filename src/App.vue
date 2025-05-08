@@ -14,7 +14,6 @@ async function load() {
   try {
     const rs = await fetch(urlApi);
     const data = await rs.json();
-    console.log(data)
 
     cards.value = data.map((item, i) => {
       return {
