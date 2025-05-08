@@ -29,14 +29,13 @@ async function load() {
   } catch (e) {
     console.log(e)
   }
-  }
 }
 
 onMounted(() => {
   load()
 })
 
-function onOpenCard(id) {
+function openCard(id) {
   const card = cards.value.find(card => card.id === id);
   if(card) {
     card.state = 'opened'
@@ -63,7 +62,7 @@ function changeStatus({id, status}) {
           :key="card.id"
           v-bind='card'
           :id="card.id"
-          @open-card="onOpenCard"
+          @open-card="openCard"
           @change-status="changeStatus"
 
       />
