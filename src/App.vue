@@ -2,7 +2,9 @@
 import {onMounted, ref} from "vue";
 import Header from "./components/Header.vue";
 import CardsList from "./components/CardsList.vue";
+import Button from "./components/Button.vue";
 
+const isStartScreen = ref(true)
 const score = ref(0)
 const cards = ref([]);
 
@@ -30,6 +32,16 @@ async function load() {
   }
 }
 
+async function startGame() {
+  isStartScreen.value = false;
+  await load();
+}
+
+async function restartGame() {
+  score.value = 0;
+  await load();
+}
+
 function openCard(id) {
   const card = cards.value.find(card => card?.id === id);
   if (card) {
@@ -37,12 +49,16 @@ function openCard(id) {
   }
 }
 
+function calculateScores(status) {
+  const bonus = (status === 'success') ? 10 : -4;
+  score.value += bonus;
+}
+
 function changeStatus({id, status}) {
   const card = cards.value.find(card => card?.id === id);
   if (card) {
     card.status = status;
-    const multiple = (status === 'success') ? 1 : -1;
-    score.value += multiple * 100;
+    calculateScores(status)
 
   }
 }
@@ -57,10 +73,25 @@ onMounted(() => {
 <template>
   <Header :scores="score"/>
 
-  <main>
-    <CardsList :cards="cards"
-               @open-card="openCard"
-               @change-status="changeStatus"/>
+  <main class="main-block">
+    <Button v-if="isStartScreen" @click="startGame()">Начать</Button>
+    <div v-else>
+      <CardsList
+          :cards="cards"
+          @open-card="openCard"
+          @change-status="changeStatus"
+      />
+
+      <Button @click="restartGame()">Начать заново</Button>
+    </div>
   </main>
 
 </template>
+
+<style>
+.main-block {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+</style>
