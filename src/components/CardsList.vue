@@ -8,23 +8,8 @@ const {cards} = defineProps({
   }
 })
 
-const emit = defineEmits(['set-score'])
+const emit = defineEmits(['open-card', 'change-status'])
 
-function openCard(id) {
-  const card = cards.find(card => card.id === id);
-  if(card) {
-    card.state = 'opened'
-  }
-}
-
-function changeStatus({id, status}) {
-  const card = cards.find(card => card.id === id);
-  if(card) {
-    card.status = status;
-    const multiple = (status === 'success') ? 1 : -1;
-    emit('set-score', multiple*100);
-  }
-}
 </script>
 
 <template>
@@ -34,8 +19,8 @@ function changeStatus({id, status}) {
         :key="card.id"
         v-bind='card'
         :id="card.id"
-        @open-card="openCard"
-        @change-status="changeStatus"
+        @open-card="payload => emit('open-card', payload)"
+        @change-status="payload => emit('change-status', payload)"
 
     />
   </div>

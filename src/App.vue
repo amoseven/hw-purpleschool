@@ -30,6 +30,23 @@ async function load() {
   }
 }
 
+function openCard(id) {
+  const card = cards.value.find(card => card?.id === id);
+  if (card) {
+    card.state = 'opened'
+  }
+}
+
+function changeStatus({id, status}) {
+  const card = cards.value.find(card => card?.id === id);
+  if (card) {
+    card.status = status;
+    const multiple = (status === 'success') ? 1 : -1;
+    score.value += multiple * 100;
+
+  }
+}
+
 onMounted(() => {
   load()
 })
@@ -41,7 +58,9 @@ onMounted(() => {
   <Header :scores="score"/>
 
   <main>
-    <CardsList :cards="cards" @setScore="val => score += val"/>
+    <CardsList :cards="cards"
+               @open-card="openCard"
+               @change-status="changeStatus"/>
   </main>
 
 </template>
