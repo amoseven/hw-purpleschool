@@ -1,7 +1,7 @@
 <script setup>
-import Header from "./components/Header.vue";
-import Card from "./components/Card.vue";
 import {onMounted, ref} from "vue";
+import Header from "./components/Header.vue";
+import CardsList from "./components/CardsList.vue";
 
 const score = ref(0)
 const cards = ref([]);
@@ -17,7 +17,7 @@ async function load() {
 
     cards.value = data.map((item, i) => {
       return {
-        id: i+1,
+        id: i + 1,
         state: 'closed',
         status: 'pending',
         word: item.word,
@@ -34,47 +34,14 @@ onMounted(() => {
   load()
 })
 
-function openCard(id) {
-  const card = cards.value.find(card => card.id === id);
-  if(card) {
-    card.state = 'opened'
-  }
-}
 
-function changeStatus({id, status}) {
-  const card = cards.value.find(card => card.id === id);
-  if(card) {
-    card.status = status;
-    const multiple = (status === 'success') ? 1 : -1;
-    score.value += multiple*100;
-  }
-}
 </script>
 
 <template>
   <Header :scores="score"/>
 
   <main>
-    <div class="cards-list">
-      <Card
-          v-for="card in cards"
-          :key="card.id"
-          v-bind='card'
-          :id="card.id"
-          @open-card="openCard"
-          @change-status="changeStatus"
-
-      />
-    </div>
-
+    <CardsList :cards="cards" @setScore="val => score += val"/>
   </main>
 
 </template>
-
-<style scoped>
-.cards-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 25px
-}
-</style>
