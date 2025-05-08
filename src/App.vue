@@ -1,26 +1,38 @@
 <script setup>
 import Header from "./components/Header.vue";
 import Card from "./components/Card.vue";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
+import axios from "axios";
 
 const score = ref(0)
+const cards = ref([]);
 
-const cards = ref([
-  {
-    id: 1,
-    state: 'closed',
-    status: 'pending',
-    word: 'Alex',
-    translation: 'Алексей'
-  },
-  {
-    id: 2,
-    state: 'closed',
-    status: 'pending',
-    word: 'Hockey',
-    translation: 'Хоккей'
+const API_BASE = "http://localhost:8080/api";
+const API_PATH = "/random-words";
+
+async function load() {
+  const urlApi = `${API_BASE}${API_PATH}`;
+  try {
+    const {data} = await axios.get(urlApi);
+
+    cards.value = data.map((item, i) => {
+      return {
+        id: i+1,
+        state: 'closed',
+        status: 'pending',
+        word: item.word,
+        translation: item.translation
+      }
+    })
+
+  } catch (e) {
+    console.log(e)
   }
-]);
+}
+
+onMounted(() => {
+  load()
+})
 
 function openCard(id) {
   const card = cards.value.find(card => card.id === id);
@@ -40,15 +52,30 @@ function changeStatus({id, status}) {
 </script>
 
 <template>
+  <Header :scores="score"/>
   <main>
-    <Header :scores="score"/>
 
+    <div class="cards-list">
       <Card
-          v-bind='cards[0]'
+          v-for="card in cards"
+          :key="card.id"
+          v-bind='card'
+          :id="card.id"
           @open-card="openCard"
           @change-status="changeStatus"
+
       />
+    </div>
+
 
   </main>
 
 </template>
+
+<style scoped>
+.cards-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px
+}
+</style>
