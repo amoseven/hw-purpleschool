@@ -5,7 +5,7 @@ import {computed} from "vue";
 import Ok from "./icons/Ок.vue"
 import Cancel from "./icons/Cancel.vue"
 
-const emit = defineEmits(['show-translate', 'change-status'])
+const emit = defineEmits(['open-card', 'change-status'])
 const {id, state, translation, word, status} = defineProps({
   id: {
     type: Number,

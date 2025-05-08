@@ -2,7 +2,6 @@
 import Header from "./components/Header.vue";
 import Card from "./components/Card.vue";
 import {onMounted, ref} from "vue";
-import axios from "axios";
 
 const score = ref(0)
 const cards = ref([]);
@@ -13,7 +12,9 @@ const API_PATH = "/random-words";
 async function load() {
   const urlApi = `${API_BASE}${API_PATH}`;
   try {
-    const {data} = await axios.get(urlApi);
+    const rs = await fetch(urlApi);
+    const data = await rs.json();
+    console.log(data)
 
     cards.value = data.map((item, i) => {
       return {
@@ -34,7 +35,7 @@ onMounted(() => {
   load()
 })
 
-function openCard(id) {
+function onOpenCard(id) {
   const card = cards.value.find(card => card.id === id);
   if(card) {
     card.state = 'opened'
@@ -61,7 +62,7 @@ function changeStatus({id, status}) {
           :key="card.id"
           v-bind='card'
           :id="card.id"
-          @open-card="openCard"
+          @open-card="onOpenCard"
           @change-status="changeStatus"
 
       />
