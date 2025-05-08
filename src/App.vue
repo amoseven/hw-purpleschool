@@ -54,8 +54,8 @@ function changeStatus({id, status}) {
 
 <template>
   <Header :scores="score"/>
-  <main>
 
+  <main>
     <div class="cards-list">
       <Card
           v-for="card in cards"
