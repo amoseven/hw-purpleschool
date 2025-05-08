@@ -19,6 +19,20 @@ const cards = ref([
     status: 'pending',
     word: 'Hockey',
     translation: 'Хоккей'
+  },
+  {
+    id: 3,
+    state: 'closed',
+    status: 'pending',
+    word: 'The Dog',
+    translation: 'Собака'
+  },
+  {
+    id: 4,
+    state: 'closed',
+    status: 'pending',
+    word: 'House',
+    translation: 'Дом'
   }
 ]);
 
@@ -40,15 +54,25 @@ function changeStatus({id, status}) {
 </script>
 
 <template>
+  <Header :scores="score"/>
   <main>
-    <Header :scores="score"/>
-
-      <Card
-          v-bind='cards[0]'
-          @open-card="openCard"
-          @change-status="changeStatus"
-      />
+      <div class="cards-list">
+        <Card
+            v-for="card in cards" :key="card.id"
+            v-bind='card'
+            @open-card="openCard"
+            @change-status="changeStatus"
+        />
+      </div>
 
   </main>
 
 </template>
+
+<style scoped>
+.cards-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px
+}
+</style>
